@@ -1,0 +1,1321 @@
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Syne:wght@400;600;700;800&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#0d1117;--bg2:#161b22;--bg3:#21262d;--bd:#30363d;--tx:#e6edf3;--tx2:#8b949e;--ac:#58a6ff;--gn:#3fb950;--yw:#d29922;--rd:#f85149;--pu:#bc8cff;--or:#e3b341;--tl:#39d353}
+#root{font-family:'Syne',sans-serif;background:var(--bg);color:var(--tx);min-height:660px;border-radius:12px;overflow:hidden;display:flex;flex-direction:column}
+.scr{display:none;flex-direction:column}
+.scr.on{display:flex}
+
+/* ── AUTH ── */
+#auth-scr{align-items:center;justify-content:center;min-height:660px;padding:30px 16px;gap:0}
+.auth-wrap{width:100%;max-width:400px;display:flex;flex-direction:column;gap:20px}
+.auth-logo{text-align:center;margin-bottom:4px}
+.auth-logo-icon{width:64px;height:64px;border-radius:16px;background:linear-gradient(135deg,#58a6ff,#bc8cff);display:flex;align-items:center;justify-content:center;font-size:28px;margin:0 auto 10px}
+.auth-title{font-size:26px;font-weight:800;text-align:center;background:linear-gradient(135deg,#58a6ff,#bc8cff);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.auth-sub{font-size:13px;color:var(--tx2);text-align:center}
+.auth-card{background:var(--bg2);border:1px solid var(--bd);border-radius:12px;padding:24px;display:flex;flex-direction:column;gap:14px}
+.auth-tabs{display:flex;gap:0;background:var(--bg3);border-radius:8px;padding:3px}
+.auth-tab{flex:1;padding:7px;font-size:12px;font-weight:700;border:none;background:none;color:var(--tx2);cursor:pointer;border-radius:6px;font-family:'Syne',sans-serif;transition:all .2s}
+.auth-tab.act{background:var(--bg2);color:var(--tx);border:1px solid var(--bd)}
+.field{display:flex;flex-direction:column;gap:5px}
+.field label{font-size:11px;color:var(--tx2);font-weight:600;text-transform:uppercase;letter-spacing:.06em}
+.field input{background:var(--bg3);border:1px solid var(--bd);border-radius:7px;color:var(--tx);padding:9px 12px;font-size:13px;font-family:'Syne',sans-serif;outline:none;transition:border .2s}
+.field input:focus{border-color:var(--ac)}
+.auth-btn{background:var(--ac);color:#0d1117;border:none;border-radius:8px;padding:11px;font-size:14px;font-weight:700;cursor:pointer;font-family:'Syne',sans-serif;transition:opacity .2s}
+.auth-btn:hover{opacity:.85}
+.auth-err{font-size:12px;color:var(--rd);text-align:center;min-height:16px}
+.auth-ok{font-size:12px;color:var(--gn);text-align:center;min-height:16px}
+.users-list{font-size:11px;color:var(--tx2);text-align:center}
+.users-list span{color:var(--ac)}
+
+/* ── DASHBOARD ── */
+#dash-scr{min-height:660px}
+.topbar{background:var(--bg2);border-bottom:1px solid var(--bd);padding:10px 16px;display:flex;align-items:center;gap:12px}
+.topbar-logo{font-size:16px;font-weight:800;flex:1;color:var(--ac)}
+.user-pill{display:flex;align-items:center;gap:8px}
+.avatar{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,#58a6ff,#bc8cff);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#0d1117}
+.username-text{font-size:12px;font-weight:600}
+.logout-btn{background:none;border:1px solid var(--bd);border-radius:6px;color:var(--tx2);padding:4px 10px;font-size:11px;cursor:pointer;font-family:'Syne',sans-serif}
+.logout-btn:hover{border-color:var(--rd);color:var(--rd)}
+.dash-body{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:14px}
+.dash-hero{background:var(--bg2);border:1px solid var(--bd);border-radius:12px;padding:18px;display:flex;align-items:center;gap:16px}
+.dash-hero-info{flex:1}
+.dash-hero h2{font-size:18px;font-weight:800;margin-bottom:4px}
+.dash-hero p{font-size:12px;color:var(--tx2);line-height:1.5}
+.continue-btn{background:var(--ac);color:#0d1117;border:none;border-radius:8px;padding:10px 18px;font-size:13px;font-weight:700;cursor:pointer;font-family:'Syne',sans-serif;white-space:nowrap;transition:opacity .2s}
+.continue-btn:hover{opacity:.85}
+.stats-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.stat-card{background:var(--bg2);border:1px solid var(--bd);border-radius:10px;padding:12px;text-align:center}
+.stat-val{font-size:22px;font-weight:800;color:var(--ac)}
+.stat-lbl{font-size:10px;color:var(--tx2);margin-top:2px}
+.prog-card{background:var(--bg2);border:1px solid var(--bd);border-radius:10px;padding:14px}
+.prog-card h3{font-size:13px;font-weight:700;margin-bottom:10px;color:var(--tx2);text-transform:uppercase;letter-spacing:.05em}
+.prog-row{display:flex;align-items:center;gap:10px;margin-bottom:7px}
+.prog-label{font-size:11px;width:90px;flex-shrink:0}
+.prog-bar{flex:1;height:6px;background:var(--bg3);border-radius:3px;overflow:hidden}
+.prog-fill{height:100%;background:var(--ac);border-radius:3px;transition:width .6s}
+.prog-fill.gn{background:var(--gn)}
+.prog-pct{font-size:10px;color:var(--tx2);width:30px;text-align:right}
+.exam-scores{background:var(--bg2);border:1px solid var(--bd);border-radius:10px;padding:14px}
+.exam-scores h3{font-size:13px;font-weight:700;margin-bottom:10px;color:var(--tx2);text-transform:uppercase;letter-spacing:.05em}
+.score-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:7px}
+.score-chip{background:var(--bg3);border-radius:8px;padding:8px 6px;text-align:center}
+.score-chip.pass{border:1px solid var(--gn)}
+.score-chip.fail{border:1px solid var(--bd)}
+.score-chip.none{border:1px solid var(--bd);opacity:.4}
+.score-lv{font-size:10px;color:var(--tx2)}
+.score-num{font-size:14px;font-weight:700}
+.score-num.pass{color:var(--gn)}
+.score-num.none{color:var(--tx2)}
+.cert-banner{background:var(--bg2);border:2px solid var(--or);border-radius:10px;padding:14px;display:flex;align-items:center;gap:12px}
+.cert-banner-text{flex:1}
+.cert-banner h3{font-size:14px;font-weight:700;color:var(--or)}
+.cert-banner p{font-size:11px;color:var(--tx2);margin-top:3px}
+
+/* ── MAP ── */
+#map-scr{min-height:660px}
+.mhdr{background:var(--bg2);border-bottom:1px solid var(--bd);padding:10px 16px;display:flex;align-items:center;gap:12px}
+.mhdr h2{font-size:14px;font-weight:700;flex:1}
+.xpw{display:flex;align-items:center;gap:7px}
+.xpb{width:90px;height:5px;background:var(--bg3);border-radius:3px;overflow:hidden}
+.xpf{height:100%;background:var(--ac);border-radius:3px;transition:width .5s}
+.mbody{flex:1;overflow-y:auto;padding:14px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.lcard{background:var(--bg2);border:1px solid var(--bd);border-radius:10px;padding:12px;cursor:pointer;transition:all .2s;position:relative}
+.lcard:hover:not(.locked){border-color:var(--ac);transform:translateY(-1px)}
+.lcard.locked{opacity:.4;cursor:not-allowed}
+.lcard.done{border-color:var(--gn)}
+.lcard.done::after{content:'✓';position:absolute;top:8px;right:10px;color:var(--gn);font-weight:700;font-size:13px}
+.lico{font-size:18px;margin-bottom:4px}
+.lnum{font-size:10px;color:var(--tx2);text-transform:uppercase;letter-spacing:.05em;margin-bottom:2px}
+.lname{font-size:13px;font-weight:700;margin-bottom:4px}
+.lsub{font-size:10px;color:var(--tx2)}
+.nav-btns{display:flex;gap:7px;padding:8px 12px;border-top:1px solid var(--bd);background:var(--bg2)}
+.nbtn{background:none;border:1px solid var(--bd);border-radius:6px;color:var(--tx2);padding:5px 12px;font-size:11px;cursor:pointer;font-family:'Syne',sans-serif}
+.nbtn:hover{background:var(--bg3)}
+.nbtn.ac{background:var(--ac);color:#0d1117;border-color:var(--ac);font-weight:700}
+
+/* ── CHAPTERS ── */
+#ch-scr{min-height:660px}
+.clist{flex:1;overflow-y:auto;padding:10px;display:flex;flex-direction:column;gap:7px}
+.ci{background:var(--bg2);border:1px solid var(--bd);border-radius:8px;padding:10px 13px;cursor:pointer;display:flex;align-items:center;gap:9px;transition:all .2s}
+.ci:hover:not(.locked){border-color:var(--ac)}
+.ci.locked{opacity:.4;cursor:not-allowed}
+.ci.done{border-color:var(--gn)}
+.cdot{width:7px;height:7px;border-radius:50%;background:var(--bd);flex-shrink:0}
+.ci.done .cdot{background:var(--gn)}
+.ctit{font-size:12px;font-weight:600}
+.csub{font-size:10px;color:var(--tx2);margin-top:1px}
+
+/* ── LESSON ── */
+#les-scr{flex-direction:row;min-height:660px}
+.lpanel{flex:1;min-width:0;display:flex;flex-direction:column;border-right:1px solid var(--bd)}
+.phdr{background:var(--bg2);border-bottom:1px solid var(--bd);padding:8px 11px;display:flex;align-items:center;gap:8px}
+.ptit{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--tx2)}
+.pbadge{background:var(--ac);color:#0d1117;border-radius:3px;padding:2px 5px;font-size:9px;font-weight:700}
+.lcont{flex:1;overflow-y:auto;padding:13px}
+.lcont h2{font-size:15px;font-weight:800;margin-bottom:8px;color:var(--ac)}
+.lcont h3{font-size:12px;font-weight:700;margin:12px 0 6px;color:var(--pu)}
+.lcont p{font-size:11px;line-height:1.7;color:var(--tx2);margin-bottom:7px}
+.lcont p strong{color:var(--tx)}
+.cb{background:var(--bg);border:1px solid var(--bd);border-radius:7px;padding:10px;margin:7px 0;font-family:'JetBrains Mono',monospace;font-size:10px;line-height:1.6;overflow-x:auto;white-space:pre}
+.le{display:flex;flex-direction:column;gap:4px;margin:7px 0}
+.lr{background:var(--bg2);border-left:3px solid var(--ac);border-radius:0 5px 5px 0;padding:6px 8px}
+.lrc{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--tl);margin-bottom:2px}
+.lrd{font-size:10px;color:var(--tx2);line-height:1.5}
+.lbot{padding:9px 11px;border-top:1px solid var(--bd);display:flex;gap:7px}
+.ppanel{flex:1;min-width:0;display:flex;flex-direction:column}
+.ca{flex:1;padding:9px;display:flex;flex-direction:column;gap:6px;overflow-y:auto;font-family:'JetBrains Mono',monospace;font-size:10px;min-height:200px}
+.cm{padding:5px 8px;border-radius:5px;line-height:1.5;white-space:pre-wrap;word-break:break-word}
+.cm.sys{background:var(--bg2);color:var(--tx2)}
+.cm.chal{background:#0d2137;border:1px solid #1f4c78;color:var(--ac)}
+.cm.usr{background:#0d2630;border:1px solid #1a4555;color:var(--tl)}
+.cm.out{background:#0d1f0d;border:1px solid #1a3d1a;color:var(--gn)}
+.cm.err{background:#1f0d0d;border:1px solid #3d1a1a;color:var(--rd)}
+.cm.hint{background:#231c0a;border:1px solid #4a3d0d;color:var(--yw)}
+.cm.ok{background:#0d1f0d;border:1px solid var(--gn);color:var(--gn)}
+.ciw{border-top:1px solid var(--bd);padding:8px 9px;display:flex;gap:7px;align-items:flex-end}
+#ci{flex:1;background:var(--bg2);border:1px solid var(--bd);border-radius:5px;color:var(--tx);padding:6px 8px;font-family:'JetBrains Mono',monospace;font-size:10px;resize:none;line-height:1.5;min-height:50px;max-height:120px;outline:none}
+#ci:focus{border-color:var(--ac)}
+.rbtn{background:var(--gn);color:#0d1117;border:none;border-radius:5px;padding:6px 11px;font-size:11px;font-weight:700;cursor:pointer;font-family:'Syne',sans-serif}
+.rbtn:hover{opacity:.85}
+.rbtn:disabled{opacity:.4;cursor:not-allowed}
+
+/* ── EXAM ── */
+#ex-scr{flex-direction:column;min-height:660px}
+.ebody{flex:1;overflow-y:auto;display:flex;flex-direction:row}
+.elearn{flex:1;min-width:0;border-right:1px solid var(--bd);display:flex;flex-direction:column}
+.eprac{flex:1;min-width:0;display:flex;flex-direction:column}
+.sdot{width:8px;height:8px;border-radius:50%;background:var(--bd)}
+.sdot.pass{background:var(--gn)}
+.sdot.fail{background:var(--rd)}
+
+/* ── CERT ── */
+#cert-scr{align-items:center;justify-content:center;padding:24px 16px;gap:14px;min-height:660px}
+.ccard{background:var(--bg2);border:2px solid var(--or);border-radius:14px;padding:26px;max-width:450px;width:100%;text-align:center}
+
+::-webkit-scrollbar{width:3px;height:3px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:var(--bd);border-radius:2px}
+</style>
+
+<div id="root">
+
+<!-- AUTH -->
+<div id="auth-scr" class="scr on">
+  <div class="auth-wrap">
+    <div class="auth-logo">
+      <div class="auth-logo-icon">🐍</div>
+      <div class="auth-title">Python Academy</div>
+      <div class="auth-sub">Sign in or create your account to save progress</div>
+    </div>
+    <div class="auth-card">
+      <div class="auth-tabs">
+        <button class="auth-tab act" id="tab-login" onclick="switchTab('login')">Sign In</button>
+        <button class="auth-tab" id="tab-register" onclick="switchTab('register')">Create Account</button>
+      </div>
+      <div id="login-form">
+        <div class="field"><label>Email Address</label><input type="email" id="l-email" placeholder="you@example.com" onkeydown="if(event.key==='Enter')doLogin()"/></div>
+        <div class="field"><label>Password</label><input type="password" id="l-pass" placeholder="Your password" onkeydown="if(event.key==='Enter')doLogin()"/></div>
+        <button class="auth-btn" onclick="doLogin()">Sign In</button>
+      </div>
+      <div id="reg-form" style="display:none;flex-direction:column;gap:14px">
+        <div class="field"><label>Full Name</label><input type="text" id="r-name" placeholder="Your name"/></div>
+        <div class="field"><label>Email Address</label><input type="email" id="r-email" placeholder="you@example.com"/></div>
+        <div class="field"><label>Password</label><input type="password" id="r-pass" placeholder="Min 6 characters"/></div>
+        <div class="field"><label>Confirm Password</label><input type="password" id="r-pass2" placeholder="Repeat password"/></div>
+        <button class="auth-btn" onclick="doRegister()">Create Account</button>
+      </div>
+      <div id="auth-msg" class="auth-err"></div>
+    </div>
+    <div class="users-list" id="users-hint"></div>
+  </div>
+</div>
+
+<!-- DASHBOARD -->
+<div id="dash-scr" class="scr">
+  <div class="topbar">
+    <div class="topbar-logo">🐍 Python Academy</div>
+    <div class="user-pill">
+      <div class="avatar" id="d-avatar">?</div>
+      <div class="username-text" id="d-uname">User</div>
+    </div>
+    <button class="nbtn" onclick="showMap()">Map</button>
+    <button class="logout-btn" onclick="doLogout()">Sign Out</button>
+  </div>
+  <div class="dash-body" id="dash-body"></div>
+</div>
+
+<!-- MAP -->
+<div id="map-scr" class="scr">
+  <div class="mhdr">
+    <span style="font-size:15px">🗺️</span>
+    <h2>Level Map</h2>
+    <div class="xpw">
+      <span style="font-size:10px;color:var(--tx2)">XP</span>
+      <div class="xpb"><div class="xpf" id="xpf"></div></div>
+      <span id="xpl" style="font-size:11px;color:var(--ac);font-weight:700">0</span>
+    </div>
+  </div>
+  <div class="mbody" id="lmap"></div>
+  <div class="nav-btns">
+    <button class="nbtn" onclick="showDash()">Dashboard</button>
+    <button class="nbtn" onclick="doLogout()">Sign Out</button>
+  </div>
+</div>
+
+<!-- CHAPTERS -->
+<div id="ch-scr" class="scr">
+  <div class="mhdr">
+    <button class="nbtn" onclick="showMap()">← Map</button>
+    <h2 id="ch-title"></h2>
+  </div>
+  <div class="clist" id="clist"></div>
+</div>
+
+<!-- LESSON -->
+<div id="les-scr" class="scr">
+  <div class="lpanel">
+    <div class="phdr">
+      <button class="nbtn" onclick="showChapters()">←</button>
+      <div class="ptit">Learning Panel</div>
+      <div class="pbadge" id="lbadge">L1C1</div>
+    </div>
+    <div class="lcont" id="lcont"></div>
+    <div class="lbot" id="lbot"></div>
+  </div>
+  <div class="ppanel">
+    <div class="phdr">
+      <div class="ptit">Practice Console</div>
+      <div id="attc" style="font-size:10px;color:var(--tx2)"></div>
+    </div>
+    <div class="ca" id="ca"></div>
+    <div class="ciw">
+      <textarea id="ci" placeholder="Type Python code… Ctrl+Enter to run" rows="3" onkeydown="if(event.key==='Enter'&&(event.ctrlKey||event.metaKey)){event.preventDefault();runCode()}"></textarea>
+      <button class="rbtn" id="rb" onclick="runCode()">▶ Run</button>
+    </div>
+  </div>
+</div>
+
+<!-- EXAM -->
+<div id="ex-scr" class="scr">
+  <div class="mhdr">
+    <button class="nbtn" onclick="showChapters()">← Back</button>
+    <h2 id="ex-title">Exam</h2>
+    <div style="display:flex;gap:5px" id="ex-dots"></div>
+  </div>
+  <div class="ebody">
+    <div class="elearn">
+      <div class="phdr"><div class="ptit">Question</div></div>
+      <div class="lcont" id="ex-qa" style="padding:12px"></div>
+      <div style="padding:9px;border-top:1px solid var(--bd);display:flex;gap:7px;flex-wrap:wrap" id="ex-nav"></div>
+    </div>
+    <div class="eprac">
+      <div class="phdr"><div class="ptit">Your Answer</div></div>
+      <div class="ca" id="ex-ca"></div>
+      <div class="ciw">
+        <textarea id="ex-ai" placeholder="Write Python code answer…" rows="3" style="flex:1;background:var(--bg2);border:1px solid var(--bd);border-radius:5px;color:var(--tx);padding:6px 8px;font-family:'JetBrains Mono',monospace;font-size:10px;resize:none;line-height:1.5;outline:none"></textarea>
+        <button class="rbtn" onclick="submitExam()">Submit</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CERT -->
+<div id="cert-scr" class="scr">
+  <div style="font-size:48px;text-align:center">🏆</div>
+  <div class="ccard">
+    <div style="font-size:20px;font-weight:800;color:var(--or);margin-bottom:6px">Certificate of Completion</div>
+    <div style="font-size:11px;color:var(--tx2)">Python Learning Academy</div>
+    <div style="font-size:16px;font-weight:700;margin:12px 0" id="cert-name">-</div>
+    <div style="font-size:12px;color:var(--tx2);line-height:1.6">Congratulations! You have successfully completed Python Learning Academy and demonstrated strong knowledge of Python programming. You are now recognized as an <strong style="color:var(--or)">Advanced Python Developer</strong>.</div>
+    <div style="margin-top:12px;font-size:10px;color:var(--tx2)" id="cert-stats">-</div>
+  </div>
+  <button class="nbtn" onclick="showDash()">Back to Dashboard</button>
+</div>
+
+</div>
+
+<script>
+/* ═══════════════════════════════════════════════════════════
+   AUTH & STORAGE ENGINE
+   All user accounts + progress stored in localStorage under
+   key "pla_users" as a JSON object: { email: {profile, progress} }
+   Current session tracked in sessionStorage under "pla_session"
+═══════════════════════════════════════════════════════════ */
+
+const DB_KEY = 'pla_users_v2';
+const SESS_KEY = 'pla_session_v2';
+
+function hashPass(p) {
+  // Simple deterministic hash for local storage (not cryptographic)
+  let h = 0;
+  for (let i = 0; i < p.length; i++) { h = ((h << 5) - h) + p.charCodeAt(i); h |= 0; }
+  return 'h' + Math.abs(h).toString(36);
+}
+
+function getDB() {
+  try { return JSON.parse(localStorage.getItem(DB_KEY) || '{}'); } catch(e) { return {}; }
+}
+function saveDB(db) {
+  try { localStorage.setItem(DB_KEY, JSON.stringify(db)); } catch(e) {}
+}
+function getSession() {
+  try { return JSON.parse(sessionStorage.getItem(SESS_KEY) || 'null'); } catch(e) { return null; }
+}
+function setSession(email) {
+  try { sessionStorage.setItem(SESS_KEY, JSON.stringify(email)); } catch(e) {}
+}
+function clearSession() {
+  try { sessionStorage.removeItem(SESS_KEY); } catch(e) {}
+}
+
+function newProgress() {
+  return {
+    xp: 0,
+    unlockedLevel: 1,
+    completedChapters: {},  // key: "lvl_chId" → true
+    examScores: {},         // key: "lvl" → score (0-5)
+    lastActivity: null,     // { level, chapter, title }
+    startedAt: new Date().toISOString(),
+    certificateEarned: false
+  };
+}
+
+/* Auto-save progress for current user */
+function saveProgress() {
+  const email = getSession();
+  if (!email) return;
+  const db = getDB();
+  if (!db[email]) return;
+  db[email].progress = G;
+  db[email].progress.savedAt = new Date().toISOString();
+  saveDB(db);
+}
+
+/* Load progress for current user into G */
+function loadProgress(email) {
+  const db = getDB();
+  if (db[email] && db[email].progress) {
+    G = db[email].progress;
+  } else {
+    G = newProgress();
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   CURRICULUM + LESSONS DATA
+═══════════════════════════════════════════════════════════ */
+const CURRICULUM=[
+  {id:1,icon:'📦',name:'Python Basics',chapters:[{id:1,t:'Installing Python & Running Code'},{id:2,t:'The print() Function'},{id:3,t:'Variables'},{id:4,t:'Data Types'},{id:'exam',t:'Level 1 Exam',type:'exam'}]},
+  {id:2,icon:'💬',name:'User Interaction',chapters:[{id:1,t:'The input() Function'},{id:2,t:'Type Conversion'},{id:3,t:'Basic Calculations'},{id:'exam',t:'Level 2 Exam',type:'exam'}]},
+  {id:3,icon:'🔀',name:'Decision Making',chapters:[{id:1,t:'if Statements'},{id:2,t:'if-else'},{id:3,t:'Nested Conditions'},{id:'exam',t:'Level 3 Exam',type:'exam'}]},
+  {id:4,icon:'🔄',name:'Loops',chapters:[{id:1,t:'for Loops'},{id:2,t:'while Loops'},{id:3,t:'break and continue'},{id:'exam',t:'Level 4 Exam',type:'exam'}]},
+  {id:5,icon:'⚙️',name:'Functions',chapters:[{id:1,t:'Creating Functions'},{id:2,t:'Parameters & Return Values'},{id:3,t:'Lambda Functions'},{id:'exam',t:'Level 5 Exam',type:'exam'}]},
+  {id:6,icon:'📚',name:'Data Structures',chapters:[{id:1,t:'Lists'},{id:2,t:'Tuples'},{id:3,t:'Dictionaries'},{id:4,t:'Sets'},{id:'exam',t:'Level 6 Exam',type:'exam'}]},
+  {id:7,icon:'📁',name:'Files & Modules',chapters:[{id:1,t:'File Reading & Writing'},{id:2,t:'Importing Modules'},{id:3,t:'Creating Modules'},{id:'exam',t:'Level 7 Exam',type:'exam'}]},
+  {id:8,icon:'🏗️',name:'OOP',chapters:[{id:1,t:'Classes & Objects'},{id:2,t:'Constructors'},{id:3,t:'Inheritance'},{id:'exam',t:'Level 8 Exam',type:'exam'}]},
+  {id:9,icon:'🔬',name:'Advanced Python',chapters:[{id:1,t:'Exception Handling'},{id:2,t:'Decorators'},{id:3,t:'Generators'},{id:'exam',t:'Level 9 Exam',type:'exam'}]},
+  {id:10,icon:'🚀',name:'Mini Projects',chapters:[{id:1,t:'Calculator Project'},{id:2,t:'Quiz Game'},{id:3,t:'File Organizer'},{id:4,t:'Final Challenge Project'},{id:'exam',t:'Final Comprehensive Exam',type:'exam'}]}
+];
+
+const LESSONS = {
+"1_1":{title:"Installing Python & Running Code",intro:"Python is one of the most beginner-friendly programming languages in the world. Before writing code, you need to understand how Python runs it line by line.",concept:"Python is an interpreted language — it reads and runs your code line by line. You can run Python in a terminal, IDLE, VS Code, or online. In this game, just type in the console and click Run!",code:`# Your very first Python program!
+print("Hello, World!")
+print("Python is awesome!")
+# Lines with # are comments — Python ignores them`,lines:[{c:`print("Hello, World!")`,d:"Calls the built-in print() function. Displays text on screen. Remove it and nothing shows."},{c:`print("Python is awesome!")`,d:"Each print() starts a new output line. You can have as many as you want."},{c:`# Lines with # are comments`,d:"Comments explain code to humans. Python skips them entirely. Use them often!"}],errors:"1) Forgetting quotes causes SyntaxError. 2) PRINT instead of print fails — Python is case-sensitive. 3) Missing closing parenthesis causes SyntaxError.",challenge:"Write code that prints your name on one line, then 'I am learning Python!' on the next line.",hint:"Use two print() statements. Each on its own line.",expected:"Two lines: your name, then the message"},
+"1_2":{title:"The print() Function",intro:"print() is Python's way of showing information. It's the first function every programmer learns and you'll use it constantly.",concept:"print() can display text (strings), numbers, variables, and multiple values at once. Strings must be in quotes — single ' or double \" both work.",code:`print("Hello!")
+print('Single quotes work too')
+print("My age is", 20)
+print("Sum:", 3 + 4)
+print("Line1\\nLine2")`,lines:[{c:`print("Hello!")`,d:"Prints a string literal. Text inside quotes is called a string."},{c:`print("My age is", 20)`,d:"Multiple values separated by commas — print adds a space between them."},{c:`print("Sum:", 3 + 4)`,d:"Python evaluates 3+4 first, then prints it alongside the text."},{c:`print("Line1\\nLine2")`,d:"\\n is a newline escape character. Splits output across two lines."}],errors:"1) print(Hello) without quotes → NameError. 2) Mixing quote types → SyntaxError. 3) print not Print.",challenge:"Use print() to display your name, your age, and the result of 100+200, each on a separate line.",hint:"Three print() calls. Last one: print(100 + 200)",expected:"Three lines: name, age, 300"},
+"1_3":{title:"Variables",intro:"Variables are labeled boxes where you store data. Define once, use the label everywhere.",concept:"In Python, name = value creates a variable. No type declaration needed — Python figures it out. Names must start with a letter or underscore, no spaces allowed.",code:`name = "Alice"
+age = 25
+height = 5.6
+print(name)
+print("Age:", age)
+age = age + 1
+print("Next year:", age)`,lines:[{c:`name = "Alice"`,d:"Creates variable 'name', stores the string 'Alice'."},{c:`age = 25`,d:"Integer variable. = means assign, not equals."},{c:`height = 5.6`,d:"Float (decimal number). Python detects type automatically."},{c:`print(name)`,d:"Prints Alice — the value stored, not the word 'name'."},{c:`age = age + 1`,d:"Reads age (25), adds 1, stores 26 back. Variables can update!"}],errors:"1) Spaces in names: my name = 'Alice' → SyntaxError. 2) Starting with digit: 1age → SyntaxError. 3) Using before creating → NameError.",challenge:"Create variables for a city name and its population, then print: 'London has 9000000 people'",hint:"city='YourCity'; pop=9000000; print(city,'has',pop,'people')",expected:"A sentence with city and population"},
+"1_4":{title:"Data Types",intro:"Every value in Python has a type. Knowing types explains what operations are valid.",concept:"4 basic types: str (text), int (whole numbers), float (decimals), bool (True/False). Use type() to inspect any value.",code:`name = "Alice"      # str
+age = 25           # int  
+height = 5.6       # float
+is_student = True  # bool
+print(type(name))
+print(type(age))
+print(type(height))
+print(type(is_student))`,lines:[{c:`name = "Alice"  # str`,d:"str = string. Any text between quotes, even '123'."},{c:`age = 25  # int`,d:"int = integer. Whole numbers, positive or negative."},{c:`height = 5.6  # float`,d:"float = floating point. Number with decimal point."},{c:`is_student = True  # bool`,d:"bool = boolean. Only True or False (capitals required!)."},{c:`print(type(name))`,d:"type() returns the data type. Outputs: <class 'str'>"}],errors:"1) true not True — capitals required. 2) '25' is str, 25 is int. 3) Cannot add str + int → TypeError.",challenge:"Create one variable of each type (str, int, float, bool). Print each variable AND its type.",hint:"print(myvar) then print(type(myvar)) for each",expected:"4 variables printed, then 4 type outputs"},
+"2_1":{title:"The input() Function",intro:"input() lets users type data into your program — making it truly interactive!",concept:"input() pauses the program, waits for user input, returns it as a string. Always store the result in a variable.",code:`name = input("What is your name? ")
+print("Hello,", name)
+city = input("Where are you from? ")
+print("Cool!", city, "sounds great!")`,lines:[{c:`name = input("What is your name? ")`,d:"Shows prompt, waits for Enter. Typed text stored in 'name'."},{c:`print("Hello,", name)`,d:"Uses the stored input in output."},{c:`city = input("Where are you from? ")`,d:"Multiple input() calls — each waits for separate input."}],errors:"1) input() always returns a string. 2) Forgetting to store discards value. 3) Prompt must be a string.",challenge:"Ask the user for their favorite color, then print: 'Wow, [color] is a great choice!'",hint:"color=input('Favorite color: '); print('Wow,',color,'is a great choice!')",expected:"Message with the user's color"},
+"2_2":{title:"Type Conversion",intro:"input() returns strings — you often need to convert types. This is called casting.",concept:"int() → integer, float() → decimal, str() → string, bool() → boolean. Fails on incompatible values.",code:`age_str = input("Enter your age: ")
+age = int(age_str)
+print("Next year:", age + 1)
+price = float(input("Enter price: "))
+print("With tax:", price * 1.1)
+number = 42
+text = str(number)
+print("As text:", text)`,lines:[{c:`age = int(age_str)`,d:"Converts '25' string to integer 25. Now math works."},{c:`price = float(input(...))`,d:"input() and float() combined. Efficient one-liner."},{c:`text = str(number)`,d:"Converts 42 to '42'. Useful for string concatenation."}],errors:"1) int('3.14') fails — use float() first. 2) int('hello') → ValueError. 3) '5' + 5 → TypeError.",challenge:"Ask for two numbers, convert to integers, print their sum.",hint:"n1=int(input('First: ')); n2=int(input('Second: ')); print(n1+n2)",expected:"Sum of the two numbers"},
+"2_3":{title:"Basic Calculations",intro:"Python is a powerful calculator. Every math operation is built in.",concept:"Operators: + - * / // (floor div) % (modulo) ** (power). Follows standard PEMDAS order.",code:`a = 10
+b = 3
+print(a + b)   # 13
+print(a - b)   # 7
+print(a * b)   # 30
+print(a / b)   # 3.333
+print(a // b)  # 3
+print(a % b)   # 1
+print(a ** b)  # 1000`,lines:[{c:`print(a / b)  # 3.333`,d:"Division always returns float in Python 3."},{c:`print(a // b)  # 3`,d:"Floor division drops the decimal. 10//3 = 3."},{c:`print(a % b)  # 1`,d:"Modulo = remainder. Useful for even/odd checks."},{c:`print(a ** b)  # 1000`,d:"Exponent. 10**3 = 10×10×10 = 1000."}],errors:"1) Division by zero → ZeroDivisionError. 2) 2**3 not 2^3. 3) Operator precedence matters.",challenge:"Get two numbers from user, print their sum, difference, product, and quotient.",hint:"Get float inputs, four print() calls with +,-,*,/",expected:"Four math results on separate lines"},
+"3_1":{title:"if Statements",intro:"if lets your program make decisions — code runs only when a condition is True.",concept:"Syntax: if condition: then indented code block. Python uses 4-space indentation to define blocks.",code:`age = 18
+if age >= 18:
+    print("You are an adult")
+    print("You can vote!")
+temperature = 35
+if temperature > 30:
+    print("It's hot outside!")`,lines:[{c:`if age >= 18:`,d:"Checks condition. If True, indented block runs. Colon required."},{c:`    print("You are an adult")`,d:"Indented — belongs to if block. Only runs when condition is True."},{c:`if temperature > 30:`,d:"Separate if — checks its own condition independently."}],errors:"1) Missing colon → SyntaxError. 2) No indentation → IndentationError. 3) = assign vs == compare.",challenge:"Ask for a number. If greater than 100, print 'Big number!'",hint:"n=int(input('Enter: ')); if n>100: print('Big number!')",expected:"Prints message only for numbers over 100"},
+"3_2":{title:"if-else",intro:"if-else gives two paths: one for True, one for False.",concept:"else block runs when if condition is False. elif adds more conditions.",code:`score = 75
+if score >= 60:
+    print("You passed!")
+else:
+    print("You failed. Try again.")
+age = 15
+if age >= 18:
+    print("Adult")
+elif age >= 13:
+    print("Teenager")
+else:
+    print("Child")`,lines:[{c:`if score >= 60:`,d:"Primary condition check."},{c:`else:`,d:"Covers everything not caught by if. No condition."},{c:`elif age >= 13:`,d:"else-if. Checked only when previous was False."}],errors:"1) else cannot have a condition. 2) elif between if and else. 3) Missing indentation.",challenge:"Ask for a number. Print Positive, Negative, or Zero.",hint:"if n>0 elif n<0 else",expected:"One of three messages"},
+"3_3":{title:"Nested Conditions",intro:"Decisions can depend on multiple conditions — nesting puts if inside another if.",concept:"Each nesting level adds indentation. Use 'and'/'or' to combine conditions cleanly.",code:`age = 20
+has_id = True
+if age >= 18:
+    if has_id:
+        print("Entry allowed")
+    else:
+        print("Need ID")
+else:
+    print("Too young")
+x = 15
+if x > 10 and x < 20:
+    print("x is between 10 and 20")`,lines:[{c:`if age >= 18:`,d:"Outer check — checks age first."},{c:`    if has_id:`,d:"Inner check — only runs when outer is True."},{c:`if x > 10 and x < 20:`,d:"'and' combines conditions. Cleaner than nesting."}],errors:"1) Wrong indentation breaks logic. 2) & vs 'and' — use 'and'. 3) Deep nesting is hard to read.",challenge:"Ask username and password. Print 'Access granted' only if both are correct (admin/1234).",hint:"if username=='admin' and password=='1234':",expected:"Access granted only for correct credentials"},
+"4_1":{title:"for Loops",intro:"for loops repeat code for each item in a sequence automatically.",concept:"for var in sequence: runs block once per item. range() generates numbers.",code:`for i in range(5):
+    print(i)
+for i in range(1, 6):
+    print("Count:", i)
+fruits = ["apple", "banana", "cherry"]
+for fruit in fruits:
+    print("I like", fruit)`,lines:[{c:`for i in range(5):`,d:"range(5) → 0,1,2,3,4. i takes each value."},{c:`for i in range(1, 6):`,d:"range(1,6) → 1,2,3,4,5. Start included, end not."},{c:`for fruit in fruits:`,d:"Loops through list items. fruit = current item."}],errors:"1) Missing colon. 2) range(5) → 0-4 not 1-5. 3) Modifying list while iterating causes bugs.",challenge:"Print multiplication table for 7: 7x1=7, 7x2=14, ... 7x10=70",hint:"for i in range(1,11): print(7,'x',i,'=',7*i)",expected:"10 lines of the 7 times table"},
+"4_2":{title:"while Loops",intro:"while loops repeat as long as a condition stays True.",concept:"while condition: repeats until False. Must update condition inside, or runs forever!",code:`count = 0
+while count < 5:
+    print("Count:", count)
+    count += 1
+print("Done!")
+number = 1
+while number <= 100:
+    number *= 2
+print("First over 100:", number)`,lines:[{c:`count = 0`,d:"Initialize before loop."},{c:`while count < 5:`,d:"Check condition each iteration."},{c:`    count += 1`,d:"MUST update! Without this: infinite loop."},{c:`    number *= 2`,d:"*= 2 doubles number each time."}],errors:"1) No update → infinite loop (Ctrl+C). 2) < vs <= matters. 3) = not == in condition.",challenge:"Use while to print all even numbers from 2 to 20.",hint:"n=2; while n<=20: print(n); n+=2",expected:"2 4 6 8 10 12 14 16 18 20"},
+"4_3":{title:"break and continue",intro:"break exits a loop early. continue skips the current iteration.",concept:"break stops the whole loop. continue skips to next iteration. Both work in for and while.",code:`for i in range(10):
+    if i == 5:
+        break
+    print(i)
+print("Ended at", i)
+for i in range(10):
+    if i % 2 == 0:
+        continue
+    print(i)`,lines:[{c:`if i == 5: break`,d:"Exits loop when i=5. Prints 0-4."},{c:`print("Ended at", i)`,d:"Runs after break. i holds last value."},{c:`if i % 2 == 0: continue`,d:"Skips even numbers. Only odd numbers reach print."}],errors:"1) break/continue only inside loops. 2) Using break instead of continue exits whole loop.",challenge:"Loop 1-20: skip multiples of 3 (continue), stop at 15 (break).",hint:"for i in range(1,21): if i%3==0: continue; if i==15: break; print(i)",expected:"1-14 excluding 3,6,9,12"},
+"5_1":{title:"Creating Functions",intro:"Functions let you name and reuse blocks of code.",concept:"def function_name(): defines it. Call it with function_name(). Nothing runs until called.",code:`def greet():
+    print("Hello!")
+    print("Welcome!")
+greet()
+greet()
+greet()
+def show_info():
+    print("Python 3")
+show_info()`,lines:[{c:`def greet():`,d:"'def' creates a function. Nothing runs yet!"},{c:`    print("Hello!")`,d:"Function body — runs when called."},{c:`greet()`,d:"Calls the function. () is required. Three calls = runs three times."}],errors:"1) Calling before defining → NameError. 2) greet without () doesn't call it. 3) Missing colon.",challenge:"Create a function draw_line() that prints '----------'. Call it 3 times.",hint:"def draw_line(): print('----------') then call it three times",expected:"Three lines of dashes"},
+"5_2":{title:"Parameters & Return Values",intro:"Parameters send data in. Return values send data back.",concept:"Parameters listed in def line receive argument values. return sends value back to caller.",code:`def greet(name):
+    print("Hello,", name)
+greet("Alice")
+greet("Bob")
+def add(a, b):
+    result = a + b
+    return result
+total = add(3, 5)
+print("Sum:", total)`,lines:[{c:`def greet(name):`,d:"'name' is a parameter — receives passed value."},{c:`greet("Alice")`,d:"'Alice' is the argument — assigned to name."},{c:`return result`,d:"Sends value back. Function 'becomes' this value."},{c:`total = add(3, 5)`,d:"Stores return value. total = 8."}],errors:"1) Wrong arg count → TypeError. 2) Code after return is unreachable. 3) No return → None.",challenge:"Write multiply(a, b) that returns a*b. Print multiply(6, 7).",hint:"def multiply(a,b): return a*b — print(multiply(6,7))",expected:"42"},
+"5_3":{title:"Lambda Functions",intro:"Lambdas are anonymous one-line functions — great for simple operations.",concept:"lambda params: expression — returns expression automatically.",code:`double = lambda x: x * 2
+print(double(5))
+add = lambda a, b: a + b
+print(add(3, 4))
+square = lambda n: n ** 2
+nums = [1,2,3,4,5]
+squares = list(map(square, nums))
+print(squares)`,lines:[{c:`double = lambda x: x * 2`,d:"Anonymous function. x is param, x*2 is return value."},{c:`print(double(5))`,d:"Call like regular function. Returns 10."},{c:`list(map(square, nums))`,d:"map() applies function to every item. list() collects results."}],errors:"1) Lambda is one expression only. 2) No if/else statements (use ternary). 3) Overuse makes code hard to read.",challenge:"Create a lambda for Celsius to Fahrenheit (F = C*9/5+32). Test with 0 and 100.",hint:"to_f = lambda c: c*9/5+32; print(to_f(0)); print(to_f(100))",expected:"32.0 and 212.0"},
+"6_1":{title:"Lists",intro:"Lists store ordered, changeable collections of items.",concept:"Created with []. Zero-indexed. Mutable — can add, remove, change items.",code:`fruits = ["apple","banana","cherry"]
+print(fruits[0])
+print(fruits[-1])
+fruits.append("date")
+fruits.insert(1,"avocado")
+fruits.remove("banana")
+print(len(fruits))
+print(fruits)`,lines:[{c:`fruits[0]`,d:"Index 0 = first item."},{c:`fruits[-1]`,d:"Negative index -1 = last item."},{c:`fruits.append("date")`,d:"Adds to END."},{c:`fruits.insert(1,"avocado")`,d:"Inserts at position 1."},{c:`fruits.remove("banana")`,d:"Removes first occurrence."},{c:`len(fruits)`,d:"Returns item count."}],errors:"1) Index out of range → IndexError. 2) Zero-indexed not one. 3) append() adds one item.",challenge:"Create list of 5 numbers. Print first, last, count. Append 99 and print list.",hint:"nums=[1,2,3,4,5]; print(nums[0],nums[-1],len(nums)); nums.append(99); print(nums)",expected:"First, last, 5, then list with 99"},
+"6_2":{title:"Tuples",intro:"Tuples are like lists but immutable — data that shouldn't change.",concept:"Tuples use (). Immutable. Faster and safer for fixed data.",code:`point = (10, 20)
+print(point[0])
+colors = ("red","green","blue")
+for color in colors:
+    print(color)
+x, y = point
+print("x:",x,"y:",y)
+print("red" in colors)`,lines:[{c:`point = (10, 20)`,d:"Parentheses create tuple."},{c:`point[0]`,d:"Index access same as lists."},{c:`x, y = point`,d:"Tuple unpacking — assigns each element to a variable."},{c:`"red" in colors`,d:"'in' checks membership. Returns True."}],errors:"1) Changing tuple → TypeError. 2) Single item: (5,) needs comma. 3) Unpack count must match.",challenge:"Create tuple with name, age, city. Unpack to 3 variables, print each.",hint:"info=('Alice',25,'London'); name,age,city=info; print each",expected:"Three lines: name, age, city"},
+"6_3":{title:"Dictionaries",intro:"Dictionaries store key-value pairs — access by name instead of position.",concept:"Created with {}. Keys must be unique and immutable. Access with dict[key].",code:`person = {"name":"Alice","age":25,"city":"London"}
+print(person["name"])
+person["age"] = 26
+person["email"] = "alice@email.com"
+print(person.keys())
+print(person.values())
+for key,value in person.items():
+    print(key,":",value)`,lines:[{c:`person["name"]`,d:"Access value by key. KeyError if key missing."},{c:`person["age"] = 26`,d:"Update existing or create new key."},{c:`person.items()`,d:"Returns all key-value pairs. Great for looping."}],errors:"1) Non-existent key → KeyError. Use .get() for safety. 2) Keys are case-sensitive. 3) Duplicate keys: later overwrites earlier.",challenge:"Create student dict with name, grade, subject. Print each value.",hint:"student={'name':'..','grade':90,'subject':'Math'}; print each with key",expected:"Three values printed"},
+"6_4":{title:"Sets",intro:"Sets store unique, unordered items. Duplicates removed automatically.",concept:"Created with {} or set(). No duplicates. Supports union, intersection, difference.",code:`fruits = {"apple","banana","cherry","apple"}
+print(fruits)
+fruits.add("date")
+fruits.discard("banana")
+a = {1,2,3,4}
+b = {3,4,5,6}
+print(a | b)
+print(a & b)
+print(a - b)`,lines:[{c:`{"apple","banana","cherry","apple"}`,d:"Duplicate 'apple' auto-removed."},{c:`fruits.add("date")`,d:"Adds item. No error if already exists."},{c:`fruits.discard("banana")`,d:"Removes safely. No error if missing."},{c:`a | b`,d:"Union. & = intersection. - = difference."}],errors:"1) No indexing: fruits[0] → TypeError. 2) {} is empty dict. Use set() for empty set.",challenge:"Create two number sets. Print union, intersection, difference.",hint:"a={1,2,3,4,5}; b={3,4,5,6,7}; print(a|b,a&b,a-b)",expected:"Union, intersection, difference results"},
+"7_1":{title:"File Reading & Writing",intro:"Files let programs save data permanently.",concept:"open(file, mode) opens files. 'r'=read, 'w'=write, 'a'=append. Use 'with' for automatic closing.",code:`with open("test.txt","w") as f:
+    f.write("Hello, file!\\n")
+    f.write("Second line\\n")
+with open("test.txt","r") as f:
+    content = f.read()
+    print(content)
+with open("test.txt","a") as f:
+    f.write("Third line\\n")`,lines:[{c:`with open("test.txt","w") as f:`,d:"Creates/opens for writing. 'with' auto-closes."},{c:`f.write("Hello!\\n")`,d:"Writes text. \\n = newline. Not added automatically."},{c:`content = f.read()`,d:"Reads entire file as one string."},{c:`with open("test.txt","a") as f:`,d:"'a' appends — doesn't erase existing content."}],errors:"1) 'w' erases existing content! 2) File not found → FileNotFoundError. 3) Missing \\n merges lines.",challenge:"Save 'Python is fun!' to 'note.txt', read it back and print it.",hint:"Write with 'w', then read with 'r' in separate 'with' blocks",expected:"Prints 'Python is fun!'"},
+"7_2":{title:"Importing Modules",intro:"Modules are pre-built Python files full of useful functions.",concept:"import module gives access to everything. from module import x imports specific items.",code:`import math
+print(math.pi)
+print(math.sqrt(16))
+print(math.floor(3.7))
+import random
+print(random.randint(1,10))
+print(random.choice(["a","b","c"]))
+from datetime import datetime
+now = datetime.now()
+print(now.year, now.month, now.day)`,lines:[{c:`import math`,d:"Loads math module. Access with math.functionname()."},{c:`math.sqrt(16)`,d:"Square root. Returns 4.0."},{c:`random.randint(1,10)`,d:"Random integer 1-10 inclusive."},{c:`from datetime import datetime`,d:"Import specific class. Use directly without module prefix."}],errors:"1) import Math → ModuleNotFoundError (case-sensitive). 2) sqrt(16) without prefix → NameError.",challenge:"Use math module to print pi, sqrt(144), and 2**10 using math.pow().",hint:"import math; print(math.pi,math.sqrt(144),math.pow(2,10))",expected:"3.14159, 12.0, 1024.0"},
+"7_3":{title:"Creating Modules",intro:"Any .py file is a module you can import. Great for organizing code.",concept:"Define functions/variables in a .py file, import it by filename (without .py).",code:`# mymodule.py contents:
+def greet(name):
+    return "Hello, " + name
+def add(a, b):
+    return a + b
+PI = 3.14159
+# Usage in main.py:
+# import mymodule
+# print(mymodule.greet("Alice"))
+# print(mymodule.add(5,3))
+# print(mymodule.PI)`,lines:[{c:`def greet(name):`,d:"Function in module. Modules are just Python files."},{c:`PI = 3.14159`,d:"Modules can have variables/constants."},{c:`# import mymodule`,d:"Save as mymodule.py, then import it."},{c:`# print(mymodule.greet("Alice"))`,d:"Access with dot notation."}],errors:"1) Module must be in same directory or on Python path. 2) Circular imports → ImportError.",challenge:"Define celsius_to_fahrenheit(c) and fahrenheit_to_celsius(f). Test both.",hint:"def c_to_f(c): return c*9/5+32; def f_to_c(f): return (f-32)*5/9",expected:"Correct conversions for test values"},
+"8_1":{title:"Classes & Objects",intro:"OOP organizes code around objects with data and behavior. Classes are blueprints.",concept:"class ClassName: defines a class. Objects are instances. Attributes = data. Methods = functions.",code:`class Dog:
+    species = "Canis lupus"
+    def bark(self):
+        print("Woof!")
+    def describe(self):
+        print("I am a dog")
+my_dog = Dog()
+my_dog.bark()
+my_dog.describe()
+print(Dog.species)`,lines:[{c:`class Dog:`,d:"Defines class. CamelCase convention."},{c:`species = "Canis lupus"`,d:"Class attribute — shared by all instances."},{c:`def bark(self):`,d:"Method. 'self' refers to the specific instance."},{c:`my_dog = Dog()`,d:"Creates instance (object) of Dog."},{c:`my_dog.bark()`,d:"Calls method. self = my_dog automatically."}],errors:"1) Missing self parameter. 2) bark without () doesn't call it. 3) Define class before using.",challenge:"Create a Car class with honk() method that prints 'Beep!'. Create two cars and call honk() on each.",hint:"class Car: def honk(self): print('Beep!'); car1=Car(); car1.honk()",expected:"'Beep!' printed twice"},
+"8_2":{title:"Constructors",intro:"Constructors initialize objects with custom data when created.",concept:"__init__ runs automatically when creating an object. self.attribute stores instance data.",code:`class Person:
+    def __init__(self, name, age):
+        self.name = name
+        self.age = age
+    def greet(self):
+        print(f"Hi! I'm {self.name}, age {self.age}")
+    def birthday(self):
+        self.age += 1
+p1 = Person("Alice", 25)
+p2 = Person("Bob", 30)
+p1.greet()
+p2.greet()
+p1.birthday()`,lines:[{c:`def __init__(self, name, age):`,d:"Constructor. Runs automatically on Person(...)."},{c:`self.name = name`,d:"Instance attribute. Each object gets its own copy."},{c:`f"Hi! I'm {self.name}"`,d:"f-string — embed variables with {}."},{c:`p1 = Person("Alice", 25)`,d:"Creates Person. 'Alice'→name, 25→age."}],errors:"1) Missing self in __init__. 2) self.name ≠ name. 3) Wrong arg count → TypeError.",challenge:"Create Rectangle class with __init__(w,h) and area() returning w*h. Print area.",hint:"class Rectangle: def __init__(self,w,h): self.w=w;self.h=h; def area(self): return self.w*self.h",expected:"Correct area (width × height)"},
+"8_3":{title:"Inheritance",intro:"Inheritance lets a class acquire methods from another class — avoids duplication.",concept:"class Child(Parent): inherits everything. super() calls parent methods. Override to customize.",code:`class Animal:
+    def __init__(self, name):
+        self.name = name
+    def speak(self):
+        print(f"{self.name} makes a sound")
+class Dog(Animal):
+    def speak(self):
+        print(f"{self.name} says: Woof!")
+class Cat(Animal):
+    def speak(self):
+        print(f"{self.name} says: Meow!")
+d = Dog("Rex")
+c = Cat("Whiskers")
+d.speak()
+c.speak()`,lines:[{c:`class Animal:`,d:"Parent class with shared structure."},{c:`class Dog(Animal):`,d:"Dog inherits Animal. Gets __init__ free."},{c:`def speak(self):`,d:"Override — replaces Animal's speak. Polymorphism!"},{c:`d = Dog("Rex")`,d:"Uses Animal's __init__ via inheritance."}],errors:"1) Forgetting super().__init__ when overriding __init__. 2) Circular inheritance.",challenge:"Create Vehicle with start(). Create Car(Vehicle) adding honk(). Call both.",hint:"class Vehicle: def start(self): print('Starting') — class Car(Vehicle): def honk(self): print('Honk!')",expected:"'Starting' and 'Honk!' from one Car object"},
+"9_1":{title:"Exception Handling",intro:"Exceptions are unavoidable. Handle them gracefully instead of crashing.",concept:"try: runs code, except: catches errors, else: if no error, finally: always runs.",code:`try:
+    number = int(input("Enter number: "))
+    result = 10 / number
+    print("Result:", result)
+except ValueError:
+    print("That's not a number!")
+except ZeroDivisionError:
+    print("Can't divide by zero!")
+except Exception as e:
+    print("Unexpected error:", e)
+else:
+    print("Success!")
+finally:
+    print("Done.")`,lines:[{c:`try:`,d:"Protected block. Error → jump to except."},{c:`except ValueError:`,d:"Catches conversion errors."},{c:`except ZeroDivisionError:`,d:"Catches division by zero."},{c:`except Exception as e:`,d:"Catch-all. e = error message."},{c:`finally:`,d:"Always runs — error or not. Good for cleanup."}],errors:"1) Bare except catches system errors too. 2) Catching errors hides bugs. 3) Don't use try/except to cover logic errors.",challenge:"Ask for a number, divide 100 by it. Handle ValueError and ZeroDivisionError.",hint:"try: n=int(input(...)); print(100/n) except ValueError:... except ZeroDivisionError:...",expected:"Result for valid input, error messages for invalid/zero"},
+"9_2":{title:"Decorators",intro:"Decorators modify functions without changing their code — elegant Python pattern.",concept:"A decorator is a function that takes and returns a modified function. Apply with @decorator.",code:`def shout(func):
+    def wrapper(*args, **kwargs):
+        result = func(*args, **kwargs)
+        return str(result).upper()
+    return wrapper
+@shout
+def greet(name):
+    return "hello " + name
+print(greet("alice"))
+def timer_log(func):
+    def wrapper(*args, **kwargs):
+        print(f"Calling {func.__name__}")
+        result = func(*args, **kwargs)
+        print("Done!")
+        return result
+    return wrapper
+@timer_log
+def add(a,b):
+    return a+b
+print(add(3,4))`,lines:[{c:`def shout(func):`,d:"Decorator — receives function as argument."},{c:`def wrapper(*args,**kwargs):`,d:"Inner function replaces original. Passes all args through."},{c:`return str(result).upper()`,d:"Modifies return value."},{c:`@shout`,d:"Sugar for: greet = shout(greet)"}],errors:"1) Forgetting return wrapper. 2) Not using *args breaks arguments. 3) Decorators change function name unless using functools.wraps.",challenge:"Write decorator add_exclamation that appends '!!!' to string-returning functions.",hint:"def add_exclamation(func): def wrapper(*a,**k): return func(*a,**k)+'!!!' return wrapper",expected:"greet('World') → 'Hello World!!!'"},
+"9_3":{title:"Generators",intro:"Generators produce values on demand — perfect for large datasets.",concept:"yield pauses function and returns a value. Resumes next call. Use in for loops or next().",code:`def count_up(n):
+    i = 1
+    while i <= n:
+        yield i
+        i += 1
+for num in count_up(5):
+    print(num)
+def squares(n):
+    for i in range(1,n+1):
+        yield i**2
+gen = squares(4)
+print(next(gen))
+print(next(gen))
+print(list(squares(5)))`,lines:[{c:`yield i`,d:"Pauses here, sends i to caller. Resumes after yield next call."},{c:`for num in count_up(5):`,d:"Generator as iterator — values produced lazily."},{c:`gen = squares(4)`,d:"Creates generator object. Code doesn't run yet!"},{c:`print(next(gen))`,d:"Gets next yielded value."},{c:`list(squares(5))`,d:"Collects all values into a list."}],errors:"1) StopIteration when exhausted. 2) Generators traverse once only. 3) return stops generator.",challenge:"Write fibonacci(n) generator yielding first n Fibonacci numbers. Print first 8.",hint:"def fibonacci(n): a,b=0,1; for _ in range(n): yield a; a,b=b,a+b",expected:"0 1 1 2 3 5 8 13"},
+"10_1":{title:"Calculator Project",intro:"Build a real calculator — combines functions, loops, conditions, and error handling.",concept:"A good calculator loops until quit, handles all operations, catches bad input.",code:`def calculator():
+    print("=== Python Calculator ===")
+    while True:
+        try:
+            a = float(input("First number: "))
+            op = input("Operator (+,-,*,/): ")
+            b = float(input("Second number: "))
+            if op == '+': print("Result:", a+b)
+            elif op == '-': print("Result:", a-b)
+            elif op == '*': print("Result:", a*b)
+            elif op == '/':
+                if b==0: print("Error: division by zero")
+                else: print("Result:", a/b)
+            else: print("Unknown operator")
+            if input("Continue? (y/n): ").lower() != 'y':
+                break
+        except ValueError:
+            print("Invalid number input")
+calculator()`,lines:[{c:`while True:`,d:"Infinite loop — calculator keeps running."},{c:`float(input(...))`,d:"Handles integers and decimals."},{c:`if op == '+':`,d:"elif chain for each operator."},{c:`if input(...).lower()!='y': break`,d:".lower() handles 'Y' or 'y'. break exits loop."},{c:`except ValueError:`,d:"Graceful error handling."}],errors:"1) Not handling /0 crashes program. 2) int() breaks decimals. 3) No loop means single-use.",challenge:"Build a calculator for +,-,*,/ with a menu, two number inputs, and result display.",hint:"Get float inputs and operator, use if/elif for operations, handle /0",expected:"Correctly computes all four operations"},
+"10_2":{title:"Quiz Game",intro:"Build an interactive quiz with scoring and feedback — a real mini app.",concept:"Quiz stores questions as dicts, loops through them, tracks score, gives feedback.",code:`def run_quiz():
+    questions = [
+        {"q":"What is 5+3?","a":"8"},
+        {"q":"What starts a function?","a":"def"},
+        {"q":"What does len([1,2,3]) return?","a":"3"}
+    ]
+    score = 0
+    for i,item in enumerate(questions,1):
+        print(f"Q{i}: {item['q']}")
+        ans = input("Your answer: ").strip().lower()
+        if ans == item['a'].lower():
+            print("Correct! +1")
+            score += 1
+        else:
+            print(f"Wrong! Answer: {item['a']}")
+    print(f"Score: {score}/{len(questions)}")
+run_quiz()`,lines:[{c:`questions = [{"q":...,"a":...}]`,d:"List of dicts — easy to add questions."},{c:`enumerate(questions,1)`,d:"Gets index+item. Starting at 1."},{c:`answer.strip().lower()`,d:".strip() removes spaces. .lower() for case-insensitive compare."},{c:`score += 1`,d:"Running score counter."}],errors:"1) Case-sensitive comparison misses correct answers. 2) Hardcoded count breaks when questions change.",challenge:"Write a 3-question quiz stored as list of dicts. Track and print final score.",hint:"questions=[{'q':...,'a':...},...]; loop, compare, count score",expected:"Runs 3 questions, shows Score: X/3"},
+"10_3":{title:"File Organizer",intro:"Build a file catalog utility — combines dicts, functions, and list operations.",concept:"Manages a catalog — adding, listing, and searching entries. Uses Levels 1-7.",code:`def file_organizer():
+    catalog = {}
+    def add_file(name,category,size):
+        catalog[name] = {"category":category,"size":size}
+        print(f"Added: {name}")
+    def list_files():
+        if not catalog:
+            print("No files")
+            return
+        for name,info in catalog.items():
+            print(f"{name} | {info['category']} | {info['size']}KB")
+    def find_by_cat(cat):
+        found=[n for n,i in catalog.items() if i['category']==cat]
+        print(f"{len(found)} file(s):",found)
+    add_file("report.pdf","Documents",512)
+    add_file("photo.jpg","Images",2048)
+    add_file("notes.txt","Documents",10)
+    list_files()
+    find_by_cat("Documents")
+file_organizer()`,lines:[{c:`catalog = {}`,d:"Dict as database. name=key, details=value."},{c:`def add_file(name,category,size):`,d:"Inner function — nested function pattern."},{c:`if not catalog:`,d:"True when dict is empty."},{c:`[n for n,i in catalog.items() if ...]`,d:"List comprehension with filter."}],errors:"1) Non-existent key access. 2) catalog in outer scope. 3) List comprehension needs boolean condition.",challenge:"Create a contact book dict. Add 3 contacts (name→phone). List all. Look up one by name.",hint:"contacts={}; def add(n,p): contacts[n]=p; def lookup(n): print(contacts.get(n,'Not found'))",expected:"Lists 3 contacts, lookup returns correct phone"},
+"10_4":{title:"Final Challenge Project",intro:"The ultimate challenge — combines OOP, files, exceptions, generators, and decorators.",concept:"Capstone project using EVERYTHING from all 9 levels.",code:`class Student:
+    def __init__(self,name,grades):
+        self.name=name
+        self.grades=grades
+    @property
+    def average(self):
+        return sum(self.grades)/len(self.grades)
+    def status(self):
+        return "Pass" if self.average>=60 else "Fail"
+    def __str__(self):
+        return f"{self.name}: avg={self.average:.1f} ({self.status()})"
+students=[
+    Student("Alice",[85,90,78]),
+    Student("Bob",[55,60,45]),
+    Student("Carol",[92,88,95])
+]
+def top_students(lst):
+    return (s for s in sorted(lst,key=lambda s:s.average,reverse=True) if s.average>=60)
+for s in top_students(students):
+    print(s)`,lines:[{c:`@property`,d:"Makes average() callable as attribute: student.average"},{c:`def __str__(self):`,d:"Magic method. Called when printing object."},{c:`return (s for s in ...)`,d:"Generator expression — lazy evaluation."},{c:`sorted(...,key=lambda s:s.average,reverse=True)`,d:"Sort by average, highest first."}],errors:"1) @property can't take arguments. 2) __str__ must return string. 3) Generator traverses once.",challenge:"Create Student class with name and grades list. Add average() method. Create 2 students, print names and averages.",hint:"class Student: def __init__(self,n,g): self.name=n;self.grades=g; def average(self): return sum(self.grades)/len(self.grades)",expected:"Two student names with calculated averages"}
+};
+
+const EXAMS={
+1:["Write code that prints the numbers 1 to 5, each on a new line, using five print() calls.",
+   "Create three variables: name (string), age (integer), height (float). Print all three.",
+   "Print the sentence: 'Python 3 was released in 2008' using a single print() statement.",
+   "Create variables x=10 and y=3. Print their sum, difference, and product.",
+   "Write code that prints 'Hello' on line 1, 'World' on line 2, and '!' on line 3."],
+2:["Ask for name and age, then print: 'Hello [name], you are [age] years old!'",
+   "Ask for two numbers, convert to integers, print their sum.",
+   "Ask for Celsius temperature, convert to Fahrenheit (F=C*9/5+32), print result.",
+   "Ask for birth year, calculate age (2024 minus year), print it.",
+   "Ask for a number, print whether it is even or odd using the % operator."],
+3:["Print 'A' for score>=90, 'B' for >=80, 'C' for >=70, 'F' below. Test with score=85.",
+   "Check if a number is positive, negative, or zero. Print the result.",
+   "Ask username and password. Print 'Access granted' if username='admin' and password='secret'.",
+   "Check if number is between 1 and 100 inclusive. Print 'In range' or 'Out of range'.",
+   "Categorize age: Child (<13), Teen (13-17), Adult (18-64), Senior (65+). Test with 25."],
+4:["Print squares of numbers 1 to 10 using a for loop.",
+   "Use while loop to count down from 10 to 1, then print 'Blast off!'",
+   "Loop 1-20: use continue to skip multiples of 4, break when reaching 17.",
+   "Write nested loops to print a 3x3 multiplication table.",
+   "Count how many even numbers are in: [3,7,2,8,1,4,6,9,10,5]"],
+5:["Write is_even(n) returning True if even, False if odd. Test with 4 and 7.",
+   "Write max_of_three(a,b,c) returning largest without using max(). Test it.",
+   "Write factorial(n) using a loop. Test factorial(5)=120.",
+   "Create a lambda converting Celsius to Kelvin (K=C+273.15). Test with 0 and 100.",
+   "Write count_vowels(text) counting vowels (aeiou). Test with 'Hello World'."],
+6:["Create list of 6 numbers. Sort, reverse, print min and max.",
+   "Given [1,2,2,3,3,3,4,4,4,4], count how many times each number appears using a dict.",
+   "Create dict of 3 countries and capitals. Print each as 'Capital of X is Y.'",
+   "Find items that appear in both lists: [1,2,3,4] and [3,4,5,6].",
+   "Create a set from [1,2,2,3,3,3,4]. Print unique items and their count."],
+7:["Write 5 lines to 'log.txt', then read and print all lines.",
+   "Import random module, generate 5 random integers between 1 and 50.",
+   "Use math module to print: floor(7.8), ceil(7.2), sqrt(49), pi (4 decimal places).",
+   "Write encode(text) that reverses a string, decode(text) also reverses it. Show they work.",
+   "Import datetime and print today's date as 'Today is DD/MM/YYYY'."],
+8:["Create BankAccount with balance, deposit(amount), withdraw(amount). Test it.",
+   "Create Shape with area()=0. Create Circle(Shape) overriding area(). Test radius=5.",
+   "Write Counter with count=0, increment(), decrement(), reset(). Test all three.",
+   "Create Person with name/age. Create Student(Person) adding grade and study() method.",
+   "Write Rectangle with width/height. Add area() and perimeter() methods. Test both."],
+9:["Write safe_divide(a,b) handling ZeroDivisionError and ValueError, returning None on error.",
+   "Write uppercase decorator making string-returning functions return uppercase.",
+   "Create even_numbers(n) generator yielding even numbers 0 to n. Print with for loop.",
+   "Write try/except/finally opening a file, reading it, always printing 'Done'.",
+   "Write generator yielding Fibonacci indefinitely. Print first 10 using next()."],
+10:["Build todo list: add items, mark done, list all. Use dict where key=task, value=bool.",
+    "Write Student class with name, grades list, average(), highest and lowest grade methods.",
+    "Create number guessing game: random 1-10, user guesses with hints until correct.",
+    "Write text analyzer: word count, unique words count, most common word.",
+    "Build mini bank: BankAccount with deposit, withdraw, balance. Handle overdraft with exceptions."]
+};
+
+/* ═══════════════════════════════════════════════════════════
+   GLOBAL STATE — represents CURRENT USER's progress
+═══════════════════════════════════════════════════════════ */
+let G = newProgress();
+let CUR_USER = null; // { email, name }
+
+/* ═══════════════════════════════════════════════════════════
+   AUTH FUNCTIONS
+═══════════════════════════════════════════════════════════ */
+function switchTab(tab) {
+  document.getElementById('tab-login').classList.toggle('act', tab==='login');
+  document.getElementById('tab-register').classList.toggle('act', tab==='register');
+  document.getElementById('login-form').style.display = tab==='login' ? 'flex' : 'none';
+  document.getElementById('reg-form').style.display = tab==='register' ? 'flex' : 'none';
+  document.getElementById('login-form').style.flexDirection = 'column';
+  document.getElementById('login-form').style.gap = '14px';
+  setAuthMsg('','');
+}
+
+function setAuthMsg(msg, type) {
+  const el = document.getElementById('auth-msg');
+  el.textContent = msg;
+  el.className = type === 'ok' ? 'auth-ok' : 'auth-err';
+}
+
+function doRegister() {
+  const name = document.getElementById('r-name').value.trim();
+  const email = document.getElementById('r-email').value.trim().toLowerCase();
+  const pass = document.getElementById('r-pass').value;
+  const pass2 = document.getElementById('r-pass2').value;
+
+  if (!name) return setAuthMsg('Please enter your name.','');
+  if (!email || !email.includes('@')) return setAuthMsg('Please enter a valid email.','');
+  if (pass.length < 6) return setAuthMsg('Password must be at least 6 characters.','');
+  if (pass !== pass2) return setAuthMsg('Passwords do not match.','');
+
+  const db = getDB();
+  if (db[email]) return setAuthMsg('An account with this email already exists.','');
+
+  db[email] = {
+    name,
+    email,
+    password: hashPass(pass),
+    createdAt: new Date().toISOString(),
+    progress: newProgress()
+  };
+  saveDB(db);
+  setAuthMsg('Account created! Signing you in…', 'ok');
+  setTimeout(() => loginUser(email), 700);
+}
+
+function doLogin() {
+  const email = document.getElementById('l-email').value.trim().toLowerCase();
+  const pass = document.getElementById('l-pass').value;
+  if (!email) return setAuthMsg('Please enter your email.','');
+  if (!pass) return setAuthMsg('Please enter your password.','');
+
+  const db = getDB();
+  const user = db[email];
+  if (!user) return setAuthMsg('No account found with this email.','');
+  if (user.password !== hashPass(pass)) return setAuthMsg('Incorrect password.','');
+
+  loginUser(email);
+}
+
+function loginUser(email) {
+  const db = getDB();
+  CUR_USER = { email, name: db[email].name };
+  setSession(email);
+  loadProgress(email);
+  showDash();
+}
+
+function doLogout() {
+  saveProgress();
+  clearSession();
+  CUR_USER = null;
+  G = newProgress();
+  ss('auth-scr');
+  updateUsersHint();
+  document.getElementById('l-email').value = '';
+  document.getElementById('l-pass').value = '';
+  setAuthMsg('', '');
+}
+
+function updateUsersHint() {
+  const db = getDB();
+  const emails = Object.keys(db);
+  const hint = document.getElementById('users-hint');
+  if (emails.length > 0) {
+    hint.innerHTML = `Saved accounts: <span>${emails.join(', ')}</span>`;
+  } else {
+    hint.innerHTML = '';
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   SCREEN HELPERS
+═══════════════════════════════════════════════════════════ */
+function ss(id) {
+  document.querySelectorAll('.scr').forEach(s => s.classList.remove('on'));
+  document.getElementById(id).classList.add('on');
+}
+function esc(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+/* ═══════════════════════════════════════════════════════════
+   DASHBOARD — shows full progress summary
+═══════════════════════════════════════════════════════════ */
+function showDash() {
+  if (!CUR_USER) { ss('auth-scr'); return; }
+  const initials = CUR_USER.name.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2);
+  document.getElementById('d-avatar').textContent = initials;
+  document.getElementById('d-uname').textContent = CUR_USER.name;
+
+  // Calculate stats
+  const totalChapters = CURRICULUM.reduce((s,l)=>s+l.chapters.filter(c=>c.type!=='exam').length,0);
+  const doneChapters = Object.keys(G.completedChapters).filter(k=>!k.includes('exam')).length;
+  const doneExams = Object.keys(G.examScores).length;
+  const certEligible = G.unlockedLevel > 10 || G.certificateEarned;
+
+  // Find where to resume
+  let resumeText = 'Start Level 1 — Chapter 1';
+  let resumeLevel = 1;
+  let resumeChId = 1;
+  if (G.lastActivity) {
+    resumeText = `L${G.lastActivity.level}: ${G.lastActivity.title}`;
+    resumeLevel = G.lastActivity.level;
+    resumeChId = G.lastActivity.chapter;
+  }
+
+  const db = document.getElementById('dash-body');
+  db.innerHTML = `
+    <div class="dash-hero">
+      <div class="dash-hero-info">
+        <h2>Welcome back, ${CUR_USER.name.split(' ')[0]}! 👋</h2>
+        <p>Currently on Level ${G.unlockedLevel > 10 ? 10 : G.unlockedLevel} — ${CURRICULUM[Math.min(G.unlockedLevel,10)-1].name}<br>
+        Last session: ${resumeText}</p>
+      </div>
+      <button class="continue-btn" onclick="resumeLearning(${resumeLevel},'${resumeChId}')">Continue Learning →</button>
+    </div>
+
+    <div class="stats-grid">
+      <div class="stat-card"><div class="stat-val">${G.xp}</div><div class="stat-lbl">XP Points</div></div>
+      <div class="stat-card"><div class="stat-val">${doneChapters}/${totalChapters}</div><div class="stat-lbl">Chapters Done</div></div>
+      <div class="stat-card"><div class="stat-val">${doneExams}/10</div><div class="stat-lbl">Exams Passed</div></div>
+      <div class="stat-card"><div class="stat-val">${Math.min(G.unlockedLevel-1,10)}/10</div><div class="stat-lbl">Levels Complete</div></div>
+    </div>
+
+    <div class="prog-card">
+      <h3>Level Progress</h3>
+      ${CURRICULUM.map(l=>{
+        const lvlChapters = l.chapters.filter(c=>c.type!=='exam');
+        const lvlDone = lvlChapters.filter(c=>G.completedChapters[`${l.id}_${c.id}`]).length;
+        const pct = Math.round(lvlDone/lvlChapters.length*100);
+        const examDone = G.completedChapters[`${l.id}_exam`];
+        return `<div class="prog-row">
+          <div class="prog-label" style="font-size:11px">${l.icon} ${l.name}</div>
+          <div class="prog-bar"><div class="prog-fill ${examDone?'gn':''}" style="width:${pct}%"></div></div>
+          <div class="prog-pct">${pct}%</div>
+        </div>`;
+      }).join('')}
+    </div>
+
+    <div class="exam-scores">
+      <h3>Exam Scores</h3>
+      <div class="score-grid">
+        ${CURRICULUM.map(l=>{
+          const score = G.examScores[l.id];
+          const done = score !== undefined;
+          const pass = score >= 4;
+          return `<div class="score-chip ${done?(pass?'pass':'fail'):'none'}">
+            <div class="score-lv">L${l.id}</div>
+            <div class="score-num ${done?(pass?'pass':'none'):'none'}">${done?score+'/5':'—'}</div>
+          </div>`;
+        }).join('')}
+      </div>
+    </div>
+
+    ${certEligible ? `
+    <div class="cert-banner">
+      <div style="font-size:28px">🏆</div>
+      <div class="cert-banner-text">
+        <h3>Certificate Earned!</h3>
+        <p>You've completed all levels and exams.</p>
+      </div>
+      <button class="continue-btn" onclick="showCert()">View Certificate</button>
+    </div>` : `
+    <div class="cert-banner" style="border-color:var(--bd);opacity:.6">
+      <div style="font-size:28px">🎓</div>
+      <div class="cert-banner-text">
+        <h3 style="color:var(--tx2)">Certificate Pending</h3>
+        <p>Complete all 10 levels and exams to earn your certificate.</p>
+      </div>
+    </div>`}
+  `;
+
+  ss('dash-scr');
+}
+
+function resumeLearning(lvl, chId) {
+  G.curLvl = lvl || 1;
+  startChapter(G.curLvl, chId || 1);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   MAP
+═══════════════════════════════════════════════════════════ */
+function showMap() {
+  document.getElementById('xpf').style.width = Math.min(100,G.xp/5)+'%';
+  document.getElementById('xpl').textContent = G.xp;
+  document.getElementById('lmap').innerHTML = CURRICULUM.map(l=>{
+    const locked = l.id > G.unlockedLevel;
+    const done = G.unlockedLevel > l.id;
+    return `<div class="lcard ${locked?'locked':''} ${done?'done':''}" onclick="${locked?'':'openLevel('+l.id+')'}">
+      <div class="lico">${l.icon}</div>
+      <div class="lnum">Level ${l.id}</div>
+      <div class="lname">${l.name}</div>
+      <div class="lsub">${l.chapters.length-1} chapters + exam</div>
+    </div>`;
+  }).join('');
+  ss('map-scr');
+}
+
+function openLevel(lid) {
+  G.curLvl = lid;
+  const l = CURRICULUM.find(x=>x.id===lid);
+  document.getElementById('ch-title').textContent = `${l.icon} Level ${lid}: ${l.name}`;
+  document.getElementById('clist').innerHTML = l.chapters.map((ch,i)=>{
+    const key = `${lid}_${ch.id}`;
+    const done = G.completedChapters[key];
+    const prevKey = i>0 ? `${lid}_${l.chapters[i-1].id}` : null;
+    const locked = i>0 && !G.completedChapters[prevKey];
+    return `<div class="ci ${done?'done':''} ${locked?'locked':''}" onclick="${locked?'':'startChapter('+lid+',\''+ch.id+'\')'}" >
+      <div class="cdot"></div>
+      <div>
+        <div class="ctit">${ch.type==='exam'?'📝 ':''}${ch.t}</div>
+        <div class="csub">${ch.type==='exam'?'Level Exam':'Lesson + Practice'} ${done?'✓':''}</div>
+      </div>
+    </div>`;
+  }).join('');
+  ss('ch-scr');
+}
+
+function showChapters() { openLevel(G.curLvl); }
+
+/* ═══════════════════════════════════════════════════════════
+   LESSON
+═══════════════════════════════════════════════════════════ */
+function startChapter(lid, chId) {
+  G.curLvl = lid; G.curCh = chId; G.attempts = 0;
+  const l = CURRICULUM.find(x=>x.id===lid);
+  const ch = l.chapters.find(c=>String(c.id)===String(chId));
+  if (ch.type==='exam') { startExam(lid); return; }
+
+  // Track last activity for resume
+  G.lastActivity = { level: lid, chapter: chId, title: ch.t };
+  saveProgress(); // auto-save on chapter start
+
+  document.getElementById('lbadge').textContent = `L${lid}C${chId}`;
+  document.getElementById('ca').innerHTML = '';
+  document.getElementById('ci').value = '';
+  renderLesson(lid, chId);
+  ss('les-scr');
+}
+
+function renderLesson(lid, chId) {
+  const key = `${lid}_${chId}`;
+  const d = LESSONS[key];
+  if (!d) {
+    document.getElementById('lcont').innerHTML = `<p style="color:var(--rd);padding:16px">Lesson ${key} not found.</p>`;
+    return;
+  }
+  document.getElementById('lcont').innerHTML = `
+    <h2>${esc(d.title)}</h2>
+    <p>${esc(d.intro)}</p>
+    <h3>What is it?</h3>
+    <p>${esc(d.concept)}</p>
+    <h3>Code Example</h3>
+    <div class="cb">${esc(d.code)}</div>
+    <h3>Line-by-Line</h3>
+    <div class="le">${d.lines.map(l=>`<div class="lr"><div class="lrc">${esc(l.c)}</div><div class="lrd">${esc(l.d)}</div></div>`).join('')}</div>
+    <h3>Common Errors</h3>
+    <p>${esc(d.errors)}</p>
+  `;
+  document.getElementById('lbot').innerHTML = `<button class="rbtn" style="background:var(--ac);color:#0d1117" onclick="showChallenge()">Start Challenge →</button>`;
+  addMsg('sys','📖 Lesson loaded! Click "Start Challenge" when ready.','ca');
+}
+
+function showChallenge() {
+  const d = LESSONS[`${G.curLvl}_${G.curCh}`];
+  document.getElementById('ca').innerHTML = '';
+  addMsg('chal','🎯 CHALLENGE:\n'+d.challenge+'\n\nExpected: '+d.expected+'\n\nType code below, press ▶ Run (3 attempts)','ca');
+  document.getElementById('attc').textContent = 'Attempt 1/3';
+  document.getElementById('lbot').innerHTML = `<button class="rbtn" style="background:var(--yw);color:#0d1117" onclick="showHint()">💡 Hint</button>`;
+  G.attempts = 0;
+}
+
+function showHint() {
+  const d = LESSONS[`${G.curLvl}_${G.curCh}`];
+  addMsg('hint','💡 '+d.hint,'ca');
+}
+
+function addMsg(type, text, targetId) {
+  const ca = document.getElementById(targetId||'ca');
+  const d = document.createElement('div');
+  d.className = 'cm '+type;
+  d.textContent = text;
+  ca.appendChild(d);
+  ca.scrollTop = ca.scrollHeight;
+}
+
+function runCode() {
+  const code = document.getElementById('ci').value.trim();
+  if (!code) return;
+  const rb = document.getElementById('rb');
+  rb.disabled = true;
+  const key = `${G.curLvl}_${G.curCh}`;
+  const d = LESSONS[key];
+  if (!d) { rb.disabled=false; return; }
+
+  G.attempts++;
+  document.getElementById('attc').textContent = `Attempt ${Math.min(G.attempts,3)}/3`;
+  addMsg('usr','>>> '+code,'ca');
+
+  const {output,correct,feedback} = evalCode(code, d.challenge, d.expected);
+  if (output) addMsg('out',output,'ca');
+
+  if (correct) {
+    addMsg('ok','✅ '+feedback+'\n+20 XP!','ca');
+    G.xp += 20;
+    G.completedChapters[key] = true;
+    checkUnlock(G.curLvl);
+    saveProgress(); // AUTO-SAVE on chapter complete
+    document.getElementById('lbot').innerHTML = `<button class="rbtn" style="background:var(--gn);color:#0d1117" onclick="showChapters()">✓ Complete — Next →</button>`;
+    document.getElementById('attc').textContent = 'Completed ✓';
+  } else {
+    addMsg('hint','💬 '+feedback,'ca');
+    if (G.attempts >= 3) {
+      addMsg('hint','⚠️ 3 attempts used. Hint:\n'+d.hint+'\n\nAttempts reset.','ca');
+      G.attempts = 0;
+      document.getElementById('attc').textContent = 'Attempt 1/3';
+    }
+  }
+  rb.disabled = false;
+}
+
+function evalCode(code, challenge, expected) {
+  const c = code.trim();
+  const ch = challenge.toLowerCase();
+  let output = '';
+  let correct = false;
+  let feedback = '';
+
+  const hasPrint=c.includes('print('),hasFunc=c.includes('def '),hasLoop=c.includes('for ')||c.includes('while '),
+    hasIf=c.includes('if '),hasClass=c.includes('class '),hasReturn=c.includes('return '),
+    hasInput=c.includes('input('),hasLambda=c.includes('lambda'),hasDict=c.includes(':'&&c.includes('{')),
+    hasList=c.includes('['),hasYield=c.includes('yield'),hasImport=c.includes('import '),hasTry=c.includes('try:');
+
+  if(ch.includes('print')&&hasPrint) correct=true;
+  if(ch.includes('variable')&&c.includes('=')&&!c.startsWith('==')) correct=true;
+  if(ch.includes('function')&&hasFunc&&hasPrint) correct=true;
+  if(ch.includes('loop')&&hasLoop) correct=true;
+  if((ch.includes('if')||ch.includes('condition'))&&hasIf) correct=true;
+  if(ch.includes('class')&&hasClass) correct=true;
+  if(ch.includes('return')&&hasReturn) correct=true;
+  if(ch.includes('lambda')&&hasLambda) correct=true;
+  if(ch.includes('list')&&hasList) correct=true;
+  if(ch.includes('dict')&&(c.includes('{')||c.includes('dict('))) correct=true;
+  if(ch.includes('input')&&hasInput) correct=true;
+  if(ch.includes('import')&&hasImport) correct=true;
+  if(ch.includes('try')&&hasTry) correct=true;
+  if(ch.includes('generator')&&hasYield) correct=true;
+  if(!correct && c.length>20&&(hasPrint||hasReturn||hasFunc||hasLoop)) correct=true;
+
+  output = correct
+    ? '[Code accepted — in Python environment this would produce your expected output]'
+    : '[Code ran but output did not match the expected pattern]';
+
+  feedback = correct
+    ? 'Great work! Your code uses the right concepts and approach.'
+    : 'Review the lesson. Make sure your code uses the concepts taught in this chapter.';
+
+  return {output, correct, feedback};
+}
+
+function checkUnlock(lid) {
+  const l = CURRICULUM.find(x=>x.id===lid);
+  const allDone = l.chapters.every(ch=>G.completedChapters[`${lid}_${ch.id}`]);
+  if (allDone && G.unlockedLevel <= lid) G.unlockedLevel = lid+1;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   EXAM
+═══════════════════════════════════════════════════════════ */
+function startExam(lid) {
+  const l = CURRICULUM.find(x=>x.id===lid);
+  document.getElementById('ex-title').textContent = `${l.icon} ${lid===10?'Final':'Level '+lid} Exam`;
+  G.examQs = EXAMS[lid];
+  G.examAns = new Array(5).fill(null);
+  G.examQ = 0;
+  G.lastActivity = { level: lid, chapter: 'exam', title: l.t+' Exam' };
+  renderExamQ(0);
+  renderDots();
+  document.getElementById('ex-ca').innerHTML = '';
+  document.getElementById('ex-ai').value = '';
+  ss('ex-scr');
+}
+
+function renderExamQ(idx) {
+  if (!G.examQs) return;
+  G.examQ = idx;
+  const q = G.examQs[idx];
+  document.getElementById('ex-qa').innerHTML = `
+    <div style="font-size:10px;color:var(--tx2);margin-bottom:5px">Question ${idx+1} of 5</div>
+    <div style="font-size:12px;font-weight:600;line-height:1.6;margin-bottom:8px">${esc(q)}</div>
+    <div style="font-size:10px;color:var(--yw)">Write Python code to solve this.</div>
+  `;
+  const ec = document.getElementById('ex-ca');
+  if (G.examAns[idx]) {
+    ec.innerHTML = '';
+    addMsg(G.examAns[idx].correct?'ok':'err', G.examAns[idx].fb, 'ex-ca');
+  } else {
+    ec.innerHTML='';
+    addMsg('sys','Write your solution for Q'+(idx+1),'ex-ca');
+  }
+  document.getElementById('ex-nav').innerHTML = `
+    ${idx>0?`<button class="nbtn" onclick="renderExamQ(${idx-1})">← Prev</button>`:''}
+    ${idx<4?`<button class="nbtn" onclick="renderExamQ(${idx+1})">Next →</button>`:''}
+    ${idx===4?`<button class="rbtn" style="background:var(--ac);color:#0d1117" onclick="finishExam()">Finish Exam ✓</button>`:''}
+  `;
+}
+
+function renderDots() {
+  document.getElementById('ex-dots').innerHTML = Array.from({length:5},(_,i)=>
+    `<div class="sdot ${G.examAns[i]?.correct?'pass':G.examAns[i]?'fail':''}" id="ed${i}"></div>`
+  ).join('');
+}
+
+function submitExam() {
+  const code = document.getElementById('ex-ai').value.trim();
+  if (!code) return;
+  const q = G.examQs[G.examQ];
+  addMsg('usr','>>> '+code,'ex-ca');
+
+  const c=code.trim(),ql=q.toLowerCase();
+  const hasPrint=c.includes('print('),hasFunc=c.includes('def '),hasLoop=c.includes('for ')||c.includes('while '),
+    hasIf=c.includes('if '),hasClass=c.includes('class '),hasReturn=c.includes('return '),
+    hasLambda=c.includes('lambda'),hasList=c.includes('['),hasImport=c.includes('import '),
+    hasTry=c.includes('try:'),hasYield=c.includes('yield');
+
+  let correct=false, fb='';
+  if(c.length<5){correct=false;fb='Please write some code!';}
+  else if(ql.includes('print')&&hasPrint){correct=true;fb='print() used correctly!';}
+  else if((ql.includes('function')||ql.includes('def'))&&hasFunc){correct=true;fb='Function defined correctly!';}
+  else if(ql.includes('loop')&&hasLoop){correct=true;fb='Loop structure looks good!';}
+  else if(ql.includes('class')&&hasClass){correct=true;fb='Class defined correctly!';}
+  else if(ql.includes('lambda')&&hasLambda){correct=true;fb='Lambda syntax correct!';}
+  else if(ql.includes('list')&&hasList){correct=true;fb='List usage looks good!';}
+  else if(ql.includes('import')&&hasImport){correct=true;fb='Module imported!';}
+  else if(ql.includes('try')&&hasTry){correct=true;fb='Exception handling structure correct!';}
+  else if(ql.includes('generator')&&hasYield){correct=true;fb='Generator uses yield correctly!';}
+  else if(c.length>25&&(hasPrint||hasReturn||hasFunc||hasLoop)){correct=true;fb='Your code demonstrates the concept well!';}
+  else{correct=false;fb='Try to write code addressing: '+q.slice(0,60)+'...';}
+
+  G.examAns[G.examQ] = {correct, fb};
+  addMsg(correct?'ok':'err', fb, 'ex-ca');
+  renderDots();
+  document.getElementById('ex-ai').value = '';
+}
+
+function finishExam() {
+  const score = G.examAns.filter(a=>a?.correct).length;
+  const pass = score >= 4;
+  const lid = G.curLvl;
+
+  if (pass) {
+    G.completedChapters[`${lid}_exam`] = true;
+    G.examScores[lid] = score; // SAVE EXAM SCORE
+    G.xp += 50;
+    if (G.unlockedLevel <= lid) G.unlockedLevel = lid+1;
+    if (lid >= 10) G.certificateEarned = true;
+    saveProgress(); // AUTO-SAVE on exam complete
+  }
+
+  document.getElementById('ex-qa').innerHTML = `
+    <h2 style="color:${pass?'var(--gn)':'var(--rd)'};font-size:15px">${pass?'🎉 Passed!':'❌ Not Passed'}</h2>
+    <p style="font-size:12px;color:var(--tx2);margin:7px 0">Score: ${score}/5 — need 4 to pass</p>
+    <p style="font-size:12px;color:var(--tx2)">${pass?'Level '+lid+' complete! '+(lid<10?'Level '+(lid+1)+' unlocked!':'All levels complete! 🏆'):'Review the chapters and try again!'}</p>
+  `;
+  document.getElementById('ex-ca').innerHTML = '';
+
+  if (pass) {
+    document.getElementById('ex-nav').innerHTML = `
+      <button class="rbtn" style="background:var(--ac);color:#0d1117" onclick="${lid>=10?'showCert()':'showDash()'}">
+        ${lid>=10?'🏆 Get Certificate':'📊 View Dashboard →'}
+      </button>`;
+    if (lid>=10) setTimeout(showCert, 300);
+  } else {
+    document.getElementById('ex-nav').innerHTML = `<button class="nbtn" onclick="retakeExam()">🔄 Retake Exam</button>`;
+  }
+}
+
+function retakeExam() {
+  G.examAns = new Array(5).fill(null);
+  G.examQ = 0;
+  renderExamQ(0);
+  renderDots();
+  document.getElementById('ex-ca').innerHTML = '';
+}
+
+function showCert() {
+  document.getElementById('cert-name').textContent = CUR_USER.name;
+  const doneChapters = Object.keys(G.completedChapters).filter(k=>!k.includes('exam')).length;
+  document.getElementById('cert-stats').textContent = `Levels: 10/10 | Chapters: ${doneChapters}+ | XP: ${G.xp} | Certificate Date: ${new Date().toLocaleDateString()}`;
+  ss('cert-scr');
+}
+
+/* ═══════════════════════════════════════════════════════════
+   INIT — check for existing session on page load
+═══════════════════════════════════════════════════════════ */
+(function init() {
+  updateUsersHint();
+  const savedEmail = getSession();
+  if (savedEmail) {
+    const db = getDB();
+    if (db[savedEmail]) {
+      CUR_USER = { email: savedEmail, name: db[savedEmail].name };
+      loadProgress(savedEmail);
+      showDash();
+      return;
+    }
+  }
+  ss('auth-scr');
+})();
+</script>
